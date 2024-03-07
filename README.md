@@ -40,7 +40,7 @@ Some importane parameters of the code:
 
 ## Cite this code
 
-If you believe this code useful, please cite our paper.
+If you find this code useful, please cite our paper. (To be published.)
 
 ## License
 
