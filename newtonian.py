@@ -294,7 +294,6 @@ class Newtownian:
             plt.legend()
             plt.show()
             return ani
-
         elif cls.dimension == 3:
             stars = cls.get_stars()
             # initialize figure
@@ -339,6 +338,5 @@ class Newtownian:
             plt.legend()
             plt.show()
             return ani
-
         else:
-            raise ValueError("Only dimension 2 and 3 plottings are supported!")
+            raise ValueError("Only plots of dimension 2 and 3 are supported!")

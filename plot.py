@@ -1,5 +1,6 @@
 import numpy as np
 import pickle
+from os import path
 
 def find_a_ep(x:np.ndarray, v:np.ndarray, GM:float) -> tuple[np.ndarray, np.ndarray]:
     '''Find semi-major axis and eccentricity based on a given pair of position "x" and velocity "v".
@@ -17,9 +18,8 @@ def find_a_ep(x:np.ndarray, v:np.ndarray, GM:float) -> tuple[np.ndarray, np.ndar
     ep = np.sqrt(ep)
     return a, ep
 
-
-
-fname = r"D:\OneDrive - University of Florida\Programs\Caustic\test\No_Osc, 1e13m, 1e13s, v=1.00, A=0.002,"
+fpath = 'data'
+fname = path.join(fpath, "No_Osc, 1e13m, 1e13s, v=1.00, A=0.002,")
 
 print('Reading data...please wait')
 print('file name:', fname)
@@ -43,7 +43,7 @@ final_v = final_cond[:,1]
 
 print('Data reading succeed. Parameter shape:', data_shape)
 
-# axes = (a, ep, phi, theta)
+# axes = (a, ep, phi, theta, phi_c)
 parameters = parameters.reshape(*data_shape, 5)
 parameters = parameters.reshape(*data_shape, 5)
 
@@ -93,6 +93,5 @@ with open(fname + r" -plot.bin", 'wb') as plotfile:
     pickle.dump(result_escape_ave, plotfile)
     pickle.dump(result_fallin, plotfile)
     pickle.dump(result_fallin_ave, plotfile)
-
 
 print('done')

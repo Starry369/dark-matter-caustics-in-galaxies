@@ -1,10 +1,7 @@
-# created 20240305
-# make parameter space to include phi_c at the beginning
-# deleted noise, never used
-
 import numpy as np
 import p_tqdm
 import pickle
+from os import path
 
 from newtonian import Newtownian
 
@@ -12,7 +9,7 @@ from newtonian import Newtownian
 # unit in this code
 # length: 1 = 1e13 m, time: 1=1e13 s
 
-path = r'D:\OneDrive - University of Florida\Programs\Caustic\test\\'  #  r'D:\OneDrive - University of Florida\Programs\Caustic\a-ep plot\\'  # file path
+fpath = 'data'  # file path
 
 #########################################################################
 # control parameters
@@ -37,7 +34,7 @@ v_c *= 1.e3  # convert to operating unit
 omega /= 3.16  # convert to operating unit
 dimension = 3  # dimension must be 3
 Newtownian.dimension = dimension
-# basic class for calculation
+# class for calculation
 class caustic_wall(Newtownian):
     '''An object close to a surface caustic.
     The gravitational field near a cuasitc ring is
@@ -170,10 +167,8 @@ parameter_space = [(i_a, ep, phi, theta, phi_c)  # 4d parameter space
                    for theta in theta_values
                    for phi_c in phic_values]
 
-#####################
-# start calculation #
-#####################
 
+# Set integration start and end time
 # evolve back to find a proper time to start integration
 # also generate initial conditions corresponding to distance between sun and caustic boundary
 '''For small oscillation case, set initial state as:
@@ -186,7 +181,7 @@ v_sun0[0] = v_c
 caustic_wall.__reset__()
 caustic_wall.set_parameters(x_c0, v_c, g_c, omega)
 sun = caustic_wall(1, x_sun0, v_sun0, 'backward')
-tspan = [0.,-150.]
+tspan = [0.,-200.]
 result = caustic_wall.evo(tspan, 0.1, 1e-9, 1e-9)  # compared wuth step size=0.01, the difference is at 1e-5
 distance = sun.x.T[0] - caustic_wall.caustic_x  # distance to be compared with 2.5a
 # generate initial condition corresponding to 'a'
@@ -206,7 +201,7 @@ v_sun0[0] = v_c
 caustic_wall.__reset__()
 caustic_wall.set_parameters(x_c0, v_c, g_c, omega)
 sun = caustic_wall(1, x_sun0, v_sun0, 'forward')
-tspan = [0.,75.]
+tspan = [0.,100.]
 result = caustic_wall.evo(tspan, 0.1, 1e-9, 1e-9)
 distance = caustic_wall.caustic_x - sun.x.T[0]  # distance to be compared with 2.5a
 # generate initial condition corresponding to 'a'
@@ -312,7 +307,7 @@ def calculate(args:tuple) -> tuple[bool, float, np.ndarray, np.ndarray, float]:
         return False, None,  None, None, None,         None,         None
 
 # create output files
-with open(path+filename+r' -config.bin', 'wb') as configfile:
+with open(path.join(fpath, filename+r' -config.bin'), 'wb') as configfile:
     pickle.dump("Variable name: (filename, omega, v_c, g_c, GM)", configfile)
     pickle.dump((filename, omega, v_c, g_c, GM), configfile)
     pickle.dump((a_count, ep_count, phi_count, np.size(theta_values), np.size(phic_values)), configfile)  # shape of output data
@@ -323,10 +318,11 @@ with open(path+filename+r' -config.bin', 'wb') as configfile:
                    for theta in theta_values
                    for phi_c in phic_values], configfile)
 
-with open(path+filename+r' -data.bin', 'wb') as ofile:
-    # store minimum orbit radius a commet reached
-    # store initial condition of that commet
-    # store probability weight of that ommet
+with open(path.join(fpath, filename+r' -data.bin'), 'wb') as ofile:
+    # store minimum orbit radius the commet reached
+    # store initial condition of the commet
+    # store final condition of the commet
+    # store probability weight of the ommet
     pass
 
 # run the code
@@ -335,7 +331,7 @@ if __name__ == '__main__':
     r_min_data, initial_values, final_values, probabilities = [], [], [], []  # store results
     # start calculation
     results = p_tqdm.p_map(calculate, parameter_space)
-    with open(path+filename+r' -data.bin', 'ab') as data_file:
+    with open(path.join(fpath, filename+r' -data.bin'), 'ab') as data_file:
         for succeed, r_min, x_pi, v_pi, x_pf, v_pf, p in results:
             if succeed:
                 # store data
