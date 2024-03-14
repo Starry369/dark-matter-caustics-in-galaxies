@@ -40,7 +40,7 @@ Some importane parameters of the code:
 
 ## Cite this code
 
-If you believe this code is useful, please cite our paper. https://arxiv.org/abs/2403.06314
+If you find this code useful, please cite our paper. https://arxiv.org/abs/2403.06314
 
 ## License
 
