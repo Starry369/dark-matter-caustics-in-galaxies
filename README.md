@@ -6,10 +6,10 @@ This code solves equations of motion of objects in the presence of dark matter c
 Current version of the code is tested under the following envoriment:
 
 - Platform: Microsoft Windows 11
-- Python: 3.11.7
-- numpy: 1.24.2
-- scipy: 1.10.1
-- matplotlib: 3.7.0
+- Python: 3.11.8
+- numpy: 1.26.4
+- scipy: 1.12.0
+- matplotlib: 3.8.3
 - p-tqdm: 1.4.0
 
 ## Useage
@@ -40,7 +40,7 @@ Some importane parameters of the code:
 
 ## Cite this code
 
-If you believe this code useful, please cite our paper.
+If you believe this code is useful, please cite our paper. https://arxiv.org/abs/2403.06314
 
 ## License
 
